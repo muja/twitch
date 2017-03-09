@@ -52,7 +52,7 @@ mv Twitch.app /Applications
 
 That should be it, OSX registers URL handlers automagically when you move an app into `/Applications`
 
-Or, download the [OSXBinaries.zip](), extract and move `Twitch.app` to `/Applications`
+Or, download the [OSXBinaries.zip](https://github.com/muja/twitch/releases/download/0.1.0/OSXBinaries.zip), extract and move `Twitch.app` to `/Applications`
 
 #### Linux (not supported yet, but simple)
 
