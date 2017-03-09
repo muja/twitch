@@ -42,6 +42,14 @@ You can install it **from source** - clone this repository and execute these ste
 5. Copy the file [osx/Info.plist](./osx/Info.plist) into `Twitch.app/Contents`
 6. Move `Twitch.app` to `/Applications` (or `/Applications/URLHandlers` if you want to keep things organized)
 
+**Or, on El Capitan and later:**
+
+```
+osacompile -o Twitch.app osx/Twitch.applescript
+mv osx/Info.plist Twitch.app/Contents
+mv Twitch.app /Applications
+```
+
 That should be it, OSX registers URL handlers automagically when you move an app into `/Applications`
 
 Or, download the [OSXBinaries.zip](), extract and move `Twitch.app` to `/Applications`
