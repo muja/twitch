@@ -2,6 +2,7 @@
 
 require 'shellwords'
 require 'pathname'
+require 'uri'
 
 RC_FILE = Pathname.new(Dir.home).join(".twitchrc")
 TOKEN_FILE = Pathname.new(Dir.home).join(".twitch_token")
@@ -18,6 +19,10 @@ def twitch_token
       TOKEN_FILE.write token
     end
   end.chomp
+end
+
+def from_url(url)
+  URI(url).host
 end
 
 options = {
@@ -81,7 +86,7 @@ loop do
     livestreamer_options.push *ARGV
     ARGV.clear
   else
-    stream = cmd
+    stream = cmd.start_with?('twitch://') ? from_url(cmd) : cmd
   end
   cmd = ARGV.shift
 end
