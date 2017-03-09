@@ -11,7 +11,7 @@
 
 (function() {
     'use strict';
-    var editAnchor = function(e, streamer) {
+    var editAnchor = (e, streamer) => {
         if ( streamer === undefined ) {
             var match = e.href.match(/^https?:\/\/(?:www\.)twitch.tv\/([^\/\?]+)/);
             if ( match === null ) return;
@@ -26,8 +26,8 @@
         }
         e.href = 'twitch://' + streamer;
     };
-    
-    waitForKeyElements(".qa-stream-preview", function(e) {
+
+    waitForKeyElements(".qa-stream-preview", e => {
         // filter unwanted streamers
         var filtered = [];
         for (var i = 0; i < filtered.length; i++) {
@@ -39,7 +39,7 @@
     });
 
     // Hosted channels in following
-    waitForKeyElements('.streams > .ember-view:not(.qa-stream-preview)', function(e) {
+    waitForKeyElements('.streams > .ember-view:not(.qa-stream-preview)', e => {
         if ( !window.XX ) window.XX = e;
         var match = e.context.innerText.match(/\w+ hosting (\w+)/);
         if ( !match ) return;
@@ -47,5 +47,16 @@
     });
 
     // replace follower list links as well
-    waitForKeyElements(".following-list a:has(img)", (e) => editAnchor(e.context));
+    waitForKeyElements(".following-list a:has(img)", e => editAnchor(e.context));
+
+    waitForKeyElements('.js-cn-tab-following', e => {
+        // Livestreamer Element
+        var lsEle = e.clone().removeClass('js-cn-tab-following').addClass('cn-tab-livestreamer');
+        lsEle.find('a').removeUniqueId().find('span').removeAttr('data-ember-action');
+        lsEle.find('.cn-tabs__count').remove();
+        lsEle.find('.cn-tabs__title').text("Watch with Livestreamer");
+        editAnchor(lsEle.find('a')[0]);
+        e.addClass('cn-tabs__item--withseparator');
+        lsEle.appendTo(e.parent());
+    });
 })();
