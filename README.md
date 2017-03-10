@@ -13,9 +13,9 @@ If you just want the whole package without reading too much, follow these steps:
 curl -sSL https://raw.githubusercontent.com/muja/twitch/master/install.sh | sh
 ```
 
-### Step 2: Install Tampermonkey script (Groovemonkey not tested yet)
+### Step 2: Install Tampermonkey script (Greasemonkey not tested yet)
 
-Copy and paste the [Tampermonkey script](./tampermonkey/twitch.js) into your Tampermonkey/Groovemonkey browser plugin.
+Copy and paste the [Tampermonkey script](./tampermonkey/twitch.js) into your Tampermonkey/Greasemonkey browser plugin.
 
 You should be ready to go!
 
