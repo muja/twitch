@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Twitch Filter + Livestreamer Replace
 // @namespace    https://github.com/muja/twitch
-// @version      0.1
+// @version      0.2.0
 // @description  Twitch script that replaces streamer URLs with twitch://<streamer> for custom URL handler
-// @author       You
+// @author       https://github.com/muja
 // @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @match        https://www.twitch.tv/*
 // @grant        none
@@ -11,6 +11,14 @@
 
 (function() {
     'use strict';
+
+    var OPEN_OPTIONS = {
+        chat: '1',              // open chat in new tab
+        quiet: '1',             // run twitch command in quiet mode
+        livestreamer_args: '',  // additional livestreamer options
+        quality: ''             // preferred quality option
+    }
+
     var editAnchor = (e, streamer) => {
         if ( streamer === undefined ) {
             var match = e.href.match(/^https?:\/\/(?:www\.)twitch.tv\/([^\/\?]+)/);
@@ -24,7 +32,7 @@
                 e.removeAttribute(a[i].name);
             }
         }
-        e.href = 'twitch://' + streamer;
+        e.href = 'twitch://' + streamer + '?' + $.param(OPEN_OPTIONS);
     };
 
     waitForKeyElements(".qa-stream-preview", e => {

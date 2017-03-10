@@ -21,14 +21,31 @@ def twitch_token
   end.chomp
 end
 
-def from_url(url)
-  URI(url).host
+def from_url(url, options)
+  no_terms = ['0', 'no', 'false']
+  yes_terms = ['1', 'yes', 'true']
+  uri = URI(url)
+  if uri.query
+    params = Hash[URI.decode_www_form(uri.query)]
+    chat, args, quality, quiet = [
+      params["chat"] || '',
+      params["livestreamer_args"] || '',
+      params["quality"] || '',
+      params["quiet"] || ''
+    ]
+    options[:chat] = false if no_terms.include? chat.downcase
+    options[:quiet] = true if yes_terms.include? quiet.downcase
+    options[:quality] = quality unless quality.empty?
+    options[:livestreamer_options].push(args) unless args.empty?
+  end
+  uri.host
 end
 
 options = {
   chat: true,
   stream: true,
   quiet: false,
+  livestreamer_options: [],
   quality: [
     "source",
     "best",
@@ -48,7 +65,6 @@ options = {
   ].join(",")
 }
 stream = nil
-livestreamer_options = []
 cmd = ARGV.shift
 loop do
   case cmd
@@ -60,7 +76,7 @@ loop do
     options[:quality] = $1 || ARGV.shift
   when "--quiet", "-Q"
     options[:quiet] = true
-    livestreamer_options << "-Q"
+    options[:livestreamer_options] << "-Q"
   when nil
     if stream.nil?
       $stderr.puts "no stream provided."
@@ -73,7 +89,7 @@ loop do
       twitch_token,
       "--stream-segment-threads",
       5,
-      *livestreamer_options,
+      *options[:livestreamer_options],
       channel,
       options[:quality]
     ].shelljoin
@@ -83,10 +99,10 @@ loop do
     exec(cmd) if options[:stream]
     break
   when "--"
-    livestreamer_options.push *ARGV
+    options[:livestreamer_options].push *ARGV
     ARGV.clear
   else
-    stream = cmd.start_with?('twitch://') ? from_url(cmd) : cmd
+    stream = cmd.start_with?('twitch://') ? from_url(cmd, options) : cmd
   end
   cmd = ARGV.shift
 end
