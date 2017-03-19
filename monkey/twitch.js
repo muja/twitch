@@ -17,7 +17,7 @@
         quiet: '1',             // run twitch command in quiet mode
         livestreamer_args: '',  // additional livestreamer options
         quality: ''             // preferred quality option
-    }
+    };
 
     var editAnchor = (e, streamer) => {
         if ( streamer === undefined ) {
@@ -67,4 +67,27 @@
         e.addClass('cn-tabs__item--withseparator');
         lsEle.appendTo(e.parent());
     });
+
+    // Set Twitch Chat page title to 'Chat - streamer'
+    var chat_url_match = window.location.pathname.match(/^\/([^\/]+)\/chat/);
+    if ( chat_url_match ) {
+        var streamer = chat_url_match[1];
+        var set_title = () => {
+            var title = ["Chat", streamer].join(" - ");
+            if (document.title !== title)
+                document.title = title;
+        };
+        set_title();
+        $.ajax({
+            url: 'https://www.twitch.tv/' + streamer,
+            success: (response) => {
+                var capitalized = response.match(new RegExp("(" + streamer + ") - Twitch", "i"));
+                if ( capitalized ) {
+                    streamer = capitalized[1];
+                    set_title();
+                }
+            }
+        });
+        setInterval(set_title, 5000); // Twitch sets title back to 'Twitch' sometimes.
+    }
 })();
