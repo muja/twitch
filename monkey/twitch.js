@@ -12,11 +12,13 @@
 (function() {
     'use strict';
 
-    var OPEN_OPTIONS = {
+    window.Livestreamer = {
+      openOptions: {
         chat: '1',              // open chat in new tab
         quiet: '1',             // run twitch command in quiet mode
         livestreamer_args: '',  // additional livestreamer options
         quality: ''             // preferred quality option
+      }
     };
 
     var editAnchor = (e, streamer) => {
@@ -32,7 +34,7 @@
                 e.removeAttribute(a[i].name);
             }
         }
-        e.href = 'twitch://' + streamer + '?' + $.param(OPEN_OPTIONS);
+        e.href = 'twitch://' + streamer + '?' + $.param(Livestreamer.openOptions);
     };
 
     waitForKeyElements(".qa-stream-preview", e => {
