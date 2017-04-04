@@ -1,0 +1,16 @@
+[package]
+name = "twitch_uri"
+version = "0.2.0"
+authors = ["Danyel Bayraktar <danyel.bayraktar@fau.de>"]
+
+license = "MIT"
+description = "Twitch URI Handler"
+repository = "https://github.com/muja/twitch"
+
+[dependencies]
+clap = "2.0.0"
+url = "1.4.0"
+
+[[bin]]
+name = "twitch_uri"
+path = "twitch.rs"
