@@ -5,11 +5,11 @@ REGEDIT4
 "URL Protocol"=""
 
 [HKEY_CLASSES_ROOT\twitch\DefaultIcon]
-@="\"C:\\Program Files\\twitch\\twitch.exe\""
+@="\"C:\\Program Files\\twitch\\twitch_uri.exe\""
 
 [HKEY_CLASSES_ROOT\twitch\shell]
 
 [HKEY_CLASSES_ROOT\twitch\shell\open]
 
 [HKEY_CLASSES_ROOT\twitch\shell\open\command]
-@="\"C:\\Program Files\\twitch\\twitch.exe\" \"%1\""
+@="\"C:\\Program Files\\twitch\\twitch_uri.exe\" \"%1\""
