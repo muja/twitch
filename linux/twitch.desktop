@@ -1,10 +1,10 @@
 [Desktop Entry]
-Name=Twitch/Livestreamer URL Handler
+Name=Twitch URI Handler
 GenericName=Video Player
 Comment=Handle URL Scheme twitch:// to open livestreamer
-Exec=/usr/local/bin/twitch %u
+Exec=/usr/local/bin/twitch_uri %u
 Terminal=false
 Type=Application
 MimeType=x-scheme-handler/twitch;
 Categories=AudioVideo;Player;Utility;
-Name[en_US]=Twitch/Livestreamer URL Handler
+Name[en_US]=Twitch URI Handler
