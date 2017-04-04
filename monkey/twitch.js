@@ -13,11 +13,18 @@
     'use strict';
 
     window.Livestreamer = {
+      scheme: 'twitch',         // scheme to use for URI, i.e. <scheme>://<streamer>
       openOptions: {
         chat: '1',              // open chat in new tab
         quiet: '1',             // run twitch command in quiet mode
         livestreamer_args: '',  // additional livestreamer options
         quality: ''             // preferred quality option
+      },
+      replace: {
+        directory: true,
+        hostedChannels: true,
+        followingSidebar: true,
+        streamerSite: true
       }
     };
 
@@ -34,32 +41,35 @@
                 e.removeAttribute(a[i].name);
             }
         }
-        e.href = 'twitch://' + streamer + '?' + $.param(Livestreamer.openOptions);
+        e.href = Livestreamer.scheme + '://' + streamer + '?' + $.param(Livestreamer.openOptions);
     };
 
     waitForKeyElements(".qa-stream-preview", e => {
-        // filter unwanted streamers
-        var filtered = [];
-        for (var i = 0; i < filtered.length; i++) {
-            e.filter(':contains(' + filtered[i] + ')').fadeOut();
-        }
-
-        // replace links with livestreamer link
+        if ( !Livestreamer.replace.directory )
+            return;
         editAnchor(e.find('a.cap')[0]);
     });
 
     // Hosted channels in following
     waitForKeyElements('.streams > .ember-view:not(.qa-stream-preview)', e => {
-        if ( !window.XX ) window.XX = e;
+        if ( !Livestreamer.replace.hostedChannels )
+            return;
         var match = e.context.innerText.match(/\w+ hosting (\w+)/);
-        if ( !match ) return;
+        if ( !match )
+            return;
         editAnchor(e.find('a.cap')[0], match[1]);
     });
 
-    // replace follower list links as well
-    waitForKeyElements(".following-list a:has(img)", e => editAnchor(e.context));
+    // replace following list links as well
+    waitForKeyElements(".following-list a:has(img)", e => {
+        if ( !Livestreamer.replace.followingSidebar )
+            return;
+        editAnchor(e.context);
+    });
 
     waitForKeyElements('.js-cn-tab-following', e => {
+        if ( !Livestreamer.replace.streamerSite )
+            return;
         // Livestreamer Element
         var lsEle = e.clone().removeClass('js-cn-tab-following').addClass('cn-tab-livestreamer');
         lsEle.find('a').removeUniqueId().find('span').removeAttr('data-ember-action');
