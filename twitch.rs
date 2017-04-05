@@ -106,7 +106,8 @@ fn main() {
 }
 
 fn execute(exes: &mut [Command], args: &[&str], p: bool) -> std::io::Result<std::process::Child> {
-    let mut err = unsafe { std::mem::uninitialized() };
+    assert!(exes.len() > 0);
+    let mut err = None;
     for mut command in exes {
         command.args(args);
         match command.spawn() {
@@ -117,11 +118,11 @@ fn execute(exes: &mut [Command], args: &[&str], p: bool) -> std::io::Result<std:
                 return Ok(process);
             }
             Err(e) => {
-                err = Err(e);
+                err = Some(Err(e));
             }
         }
     }
-    err
+    err.unwrap()
 }
 
 #[cfg(target_os = "linux")]
