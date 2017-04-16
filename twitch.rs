@@ -113,7 +113,7 @@ fn execute(exes: &mut [Command], args: &[&str], p: bool) -> std::io::Result<std:
         match command.spawn() {
             Ok(process) => {
                 if p {
-                    println!("{:?}", command)
+                    println!("{:?}", command);
                 }
                 return Ok(process);
             }
