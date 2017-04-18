@@ -25,7 +25,8 @@
         hostedChannels: true,
         followingSidebar: true,
         streamerSite: true
-      }
+      },
+      disableMiniPlayer: false
     };
 
     var editAnchor = (e, streamer) => {
@@ -79,6 +80,12 @@
         e.addClass('cn-tabs__item--withseparator');
         lsEle.appendTo(e.parent());
     });
+
+    waitForKeyElements('.js-player-mini', e => {
+        if ( !Livestreamer.disableMiniPlayer )
+            return;
+        e.remove();
+    })
 
     // Set Twitch Chat page title to 'Chat - streamer'
     var chat_url_match = window.location.pathname.match(/^\/([^\/]+)\/chat/);
